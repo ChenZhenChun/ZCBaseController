@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>showAlertView</string>
+	<string>goback</string>
+	<string>pushViewController</string>
+	<string>presentViewController</string>
+	<string>configNavigation</string>
+	<string>showMenuView</string>
+	<string>photoBrowser</string>
+	<string>pushToOtherApp</string>
+	<string>networkReachabilityStatus</string>
+	<string>isHasAppByScheme</string>
+	<string>generalPasteboard</string>
+	<string>checkJSApi</string>
+	<string>videoPlayerFullScreen</string>
+	<string>initGLPlayer</string>
+	<string>controlGLPlayer</string>
+	<string>glCallPhone</string>
+	<string>pushToLoginViewControllerNew</string>
+	<string>gotoMap</string>
+	<string>getSessionId</string>
+	<string>ywq_checkCert</string>
+	<string>ywq_checkStamp</string>
+	<string>ywq_getOpenId</string>
+	<string>ywq_batchsignList</string>
+	<string>ywq_batchsignaAutoCheckList</string>
+	<string>refreshNativePage</string>
+	<string>popWithPage</string>
+	<string>popWithUrl</string>
+	<string>parametersToNative</string>
+	<string>saveSystemData</string>
+	<string>getSystemData</string>
+	<string>pushDictPickView</string>
+	<string>imPushImageVC</string>
+</array>
+</plist>

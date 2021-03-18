@@ -22,11 +22,11 @@
 @property (nonatomic,readonly) NSString         *imApnsCerName;
 @property (nonatomic,readonly) NSString         *qCloudAppId;
 @property (nonatomic,readonly) NSString         *qCloudRegionName;
-@property (nonatomic,readonly) NSString         *appCode;
 @property (nonatomic,readonly) NSString         *prodCode;
+@property (nonatomic,readonly) NSDictionary     *linkfaceDict;//api_id,api_secret
+@property (nonatomic,copy) NSString             *appCode;
 @property (nonatomic,copy) NSString             *orgCode;
 @property (nonatomic,copy) NSString             *commonsSessionId;//平台要求的身份令牌
-@property (nonatomic,readonly) NSDictionary     *linkfaceDict;//api_id,api_secret
 
 /**
  拨打客服电话

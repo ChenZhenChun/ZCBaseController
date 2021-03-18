@@ -23,7 +23,6 @@
 @property (nonatomic,copy) NSString         *imApnsCerName;
 @property (nonatomic,copy) NSString         *qCloudAppId;
 @property (nonatomic,copy) NSString         *qCloudRegionName;
-@property (nonatomic,copy) NSString         *appCode;
 @property (nonatomic,copy) NSString         *prodCode;
 @property (nonatomic,strong) NSDictionary   *linkfaceDict;
 @end

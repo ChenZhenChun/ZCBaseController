@@ -163,14 +163,24 @@
  赋值到剪贴板
 
  @param dic {
- "string":""
+ "string":"",
+ "successTips":"xxxxxxx"
  }
  */
 #pragma mark - 赋值到剪贴板
 - (void)generalPasteboard:(NSDictionary *)dic {
     NSString *string = dic[@"string"];
+    NSString *successTips = dic[@"successTips"];
+    if ([NSString isBlankString:string]) {
+        return;
+    }
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = string;
+    if (![NSString isBlankString:successTips]) {
+        [self hud_showHintTip:successTips];
+    }else {
+        [self hud_showHintTip:@"复制成功"];
+    }
 }
 
 

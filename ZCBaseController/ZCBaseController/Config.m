@@ -17,6 +17,8 @@
 @property (nonatomic,copy) NSString         *appStoreUrl;//app下载页
 @property (nonatomic,copy) NSString         *downloadUrl;
 @property (nonatomic,copy) NSString         *servicePhone;//客服电话
+@property (nonatomic,assign) int            imAppId;
+@property (nonatomic,assign) int            imApnsBusinessId;
 @property (nonatomic,copy) NSString         *imAppkey;
 @property (nonatomic,copy) NSString         *imPushKitCerName;
 @property (nonatomic,copy) NSString         *imPushKitDevCerName;
@@ -57,6 +59,22 @@
     if (_servicePhone) return _servicePhone;
     _servicePhone = [[Config sharedInstance].configDict valueForKey:@"ServicePhone"];
     return _servicePhone;
+}
+
+- (int)imAppId {
+    if (_imAppId) return _imAppId;
+    _imAppId = [[Config sharedInstance].configDict[@"IM"][@"IMAppId"] intValue];
+    return _imAppId;
+}
+
+- (int)imApnsBusinessId {
+    if (_imApnsBusinessId) return _imApnsBusinessId;
+#ifdef DEBUG
+    _imApnsBusinessId = [[Config sharedInstance].configDict[@"IM"][@"IMApnsDevBusinessId"]intValue];
+#else
+    _imApnsBusinessId = [[Config sharedInstance].configDict[@"IM"][@"IMApnsBusinessId"]intValue];
+#endif
+    return _imApnsBusinessId;
 }
 
 - (NSString *)imAppkey {

@@ -34,5 +34,7 @@
 	<string>getSystemData</string>
 	<string>pushDictPickView</string>
 	<string>imPushImageVC</string>
+	<string>downloadFile</string>
+	<string>pushLaunchMiniProgram</string>
 </array>
 </plist>

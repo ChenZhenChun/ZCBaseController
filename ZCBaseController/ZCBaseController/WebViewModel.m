@@ -15,6 +15,7 @@
 #import "UIColor+Hex.h"
 #import "NSArray+Category.h"
 #import "NSObject+GLHUD.h"
+#import "ZCDocumentPickerVC.h"
 
 @interface WebViewModel()
 {
@@ -501,6 +502,35 @@
             *stop = YES;
         }
     }];
+}
+
+/**
+ 文件下载
+ 
+ @param dic
+ {
+ "url":"下载链接地址",//多个用逗号隔开
+ "fileName":"文件名",//非必填项，多个用逗号隔开。如果用斜杠分割，则可定义文件夹，例如 "电子处方/xxxx.pdf"
+ "type":0,//文件下载位置  0：Documents  1：Caches   3:tmp(临时缓存文件，系统会自动清理)
+ "callback":"xxxxxxx(#)"
+ }
+ */
+- (void)downloadFile:(NSDictionary *)dic {
+    NSString *url = dic[@"url"];
+    NSString *fileName = dic[@"fileName"];
+    NSInteger type = [dic[@"type"] integerValue];
+    NSString *callback = [dic objectForKey:@"callback"];
+    self.vc.javaScript = callback;
+    if ([NSString isBlankString:url]) {
+        if (![NSString isBlankString:self.vc.javaScript]) {
+            self.vc.javaScript = [self.vc.javaScript stringByReplacingOccurrencesOfString:@"#" withString:[NSString stringWithFormat:@"'%@'",@"-2"]];
+            [self.vc.webView evaluateJavaScript:self.vc.javaScript completionHandler:nil];
+            self.vc.javaScript = nil;
+        }
+        [self hud_showHintTip:@"地址不允许为空"];
+        return;
+    }
+    [[ZCDocumentPickerVC sharedInstance] downLoadWithRemoteUrl:url fileName:fileName type:type currentVC:self.vc];
 }
 
 

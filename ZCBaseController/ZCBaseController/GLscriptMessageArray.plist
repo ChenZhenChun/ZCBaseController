@@ -36,5 +36,6 @@
 	<string>imPushImageVC</string>
 	<string>downloadFile</string>
 	<string>pushLaunchMiniProgram</string>
+	<string>soundRecorder</string>
 </array>
 </plist>

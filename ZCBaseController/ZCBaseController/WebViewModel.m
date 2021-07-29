@@ -30,7 +30,7 @@
     self = [super init];
     if (self) {
         _vc = baseWebViewController;
-        _menuKey = @[@"SelectPhoto",@"PickView",@"KeyboardAccessoryView"];
+        _menuKey = @[@"SelectPhoto",@"PickView",@"KeyboardAccessoryView",@"ScanCodeViewController"];
     }
     return self;
 }

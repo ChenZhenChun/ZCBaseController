@@ -17,6 +17,14 @@
 #import "Config.h"
 #import "NSObject+GLHUD.h"
 
+/**
+ xxxxxxxx.a.b.cn
+ xxxxxxxx为自定义字符串，标识不同项目
+ a.b.cn 域名，不能随便填写，微信支付地址中redirect_url后面的域名。如果填其他域名，域名需要再微信商务上加白名单授权
+ 这两部分组成了一个app的scheme（设定scheme为这个字符串，支付完成后能回跳到app）
+ */
+#define CompanyFirstDomainByWeChatRegister [Config sharedInstance].configDict[@"CompanyFirstDomainByWeChatRegister"]
+
 @interface GLBaseWebViewController ()<WKScriptMessageHandler>
 @property (nonatomic,strong) UIBarButtonItem            *closeItem;
 @property (nonatomic,strong) UIBarButtonItem            *fixBar;
@@ -124,12 +132,12 @@
 
 //// 接收到服务器跳转请求之后调用
 //- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation {
-//    
+//
 //}
 //
 //// 在收到响应后，决定是否跳转
 //- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
-//    
+//
 //}
 
 // 在发送请求之前，决定是否跳转
@@ -138,6 +146,83 @@
     if (navigationAction.targetFrame == nil) {
         [webView loadRequest:navigationAction.request];
     }
+    
+    NSURLRequest *request        = navigationAction.request;
+    NSString     *scheme         = [request.URL scheme];
+    // decode for all URL to avoid url contains some special character so that it wasn't load.
+    NSString     *absoluteString = [navigationAction.request.URL.absoluteString stringByRemovingPercentEncoding];
+    
+    static NSString *endPayRedirectURL = nil;
+    
+    // Wechat Pay, Note : modify redirect_url to resolve we couldn't return our app from wechat client.
+    if ([absoluteString hasPrefix:@"https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb"]
+        && ![absoluteString hasSuffix:[NSString stringWithFormat:@"redirect_url=%@://",CompanyFirstDomainByWeChatRegister]]
+        ) {
+        decisionHandler(WKNavigationActionPolicyCancel);
+        
+#warning Note : The string "xiaodongxie.cn://" must be configured by wechat background. It must be your company first domin. You also should configure "URL types" in the Info.plist file.
+        
+        // 1. If the url contain "redirect_url" : We need to remember it to use our scheme replace it.
+        // 2. If the url not contain "redirect_url" , We should add it so that we will could jump to our app.
+        //  Note : 2. if the redirect_url is not last string, you should use correct strategy, because the redirect_url's value may contain some "&" special character so that my cut method may be incorrect.
+        NSString *redirectUrl = nil;
+        if ([absoluteString containsString:@"redirect_url="]) {
+            NSRange redirectRange = [absoluteString rangeOfString:@"redirect_url"];
+            endPayRedirectURL =  [absoluteString substringFromIndex:redirectRange.location+redirectRange.length+1];
+            redirectUrl = [[absoluteString substringToIndex:redirectRange.location] stringByAppendingString:[NSString stringWithFormat:@"redirect_url=%@://",CompanyFirstDomainByWeChatRegister]];
+        }else {
+            redirectUrl = [absoluteString stringByAppendingString:[NSString stringWithFormat:@"&redirect_url=%@://",CompanyFirstDomainByWeChatRegister]];
+        }
+        
+        NSMutableURLRequest *newRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:redirectUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
+        newRequest.allHTTPHeaderFields = request.allHTTPHeaderFields;
+        newRequest.URL = [NSURL URLWithString:redirectUrl];
+        [webView loadRequest:newRequest];
+        return;
+    }
+    
+    // Judge is whether to jump to other app.
+    if (![scheme isEqualToString:@"https"] && ![scheme isEqualToString:@"http"]) {
+        decisionHandler(WKNavigationActionPolicyCancel);
+        if ([scheme isEqualToString:@"weixin"]) {
+            // The var endPayRedirectURL was our saved origin url's redirect address. We need to load it when we return from wechat client.
+            if (endPayRedirectURL) {
+                [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:endPayRedirectURL] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10]];
+            }
+            BOOL canOpen = [[UIApplication sharedApplication] canOpenURL:request.URL];
+            if (canOpen) {
+                [[UIApplication sharedApplication] openURL:request.URL];
+            }
+        }else if ([scheme isEqualToString:@"alipay"]) {
+            // 截取 json 部分
+            NSRange range = [absoluteString rangeOfString:@"{"];
+            NSString *param1 = [absoluteString substringFromIndex:range.location];
+            if ([param1 rangeOfString:@"\"fromAppUrlScheme\":"].length > 0) {
+                id json = [param1 mj_JSONObject];
+                if (![json isKindOfClass:[NSDictionary class]]) {
+                    decisionHandler(WKNavigationActionPolicyAllow);
+                    return;
+                }
+                
+                NSMutableDictionary *dicM = [NSMutableDictionary dictionaryWithDictionary:json];
+                dicM[@"fromAppUrlScheme"] = CompanyFirstDomainByWeChatRegister;
+                
+                NSString *encodedString = [[dicM mj_JSONString] mj_url].absoluteString;
+                
+                // 只替换 json 部分
+                absoluteString = [absoluteString stringByReplacingCharactersInRange:NSMakeRange(range.location, absoluteString.length - range.location) withString:encodedString];
+                
+                BOOL canOpen = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:absoluteString]];
+                if (canOpen) {
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:absoluteString]];
+                }
+            }
+        }
+        
+        return;
+    }
+    
+    
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 

@@ -16,6 +16,7 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import "Config.h"
 #import "NSObject+GLHUD.h"
+#import "NSString+Category.h"
 
 /**
  xxxxxxxx.a.b.cn
@@ -154,9 +155,13 @@
     
     static NSString *endPayRedirectURL = nil;
     
+    if ([NSString isBlankString:self.companyFirstDomainByWeChatRegister]) {
+        self.companyFirstDomainByWeChatRegister = CompanyFirstDomainByWeChatRegister;
+    }
+    
     // Wechat Pay, Note : modify redirect_url to resolve we couldn't return our app from wechat client.
     if ([absoluteString hasPrefix:@"https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb"]
-        && ![absoluteString hasSuffix:[NSString stringWithFormat:@"redirect_url=%@://",CompanyFirstDomainByWeChatRegister]]
+        && ![absoluteString hasSuffix:[NSString stringWithFormat:@"redirect_url=%@://",self.companyFirstDomainByWeChatRegister]]
         ) {
         decisionHandler(WKNavigationActionPolicyCancel);
         
@@ -169,9 +174,9 @@
         if ([absoluteString containsString:@"redirect_url="]) {
             NSRange redirectRange = [absoluteString rangeOfString:@"redirect_url"];
             endPayRedirectURL =  [absoluteString substringFromIndex:redirectRange.location+redirectRange.length+1];
-            redirectUrl = [[absoluteString substringToIndex:redirectRange.location] stringByAppendingString:[NSString stringWithFormat:@"redirect_url=%@://",CompanyFirstDomainByWeChatRegister]];
+            redirectUrl = [[absoluteString substringToIndex:redirectRange.location] stringByAppendingString:[NSString stringWithFormat:@"redirect_url=%@://",self.companyFirstDomainByWeChatRegister]];
         }else {
-            redirectUrl = [absoluteString stringByAppendingString:[NSString stringWithFormat:@"&redirect_url=%@://",CompanyFirstDomainByWeChatRegister]];
+            redirectUrl = [absoluteString stringByAppendingString:[NSString stringWithFormat:@"&redirect_url=%@://",self.companyFirstDomainByWeChatRegister]];
         }
         
         NSMutableURLRequest *newRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:redirectUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
@@ -205,7 +210,7 @@
                 }
                 
                 NSMutableDictionary *dicM = [NSMutableDictionary dictionaryWithDictionary:json];
-                dicM[@"fromAppUrlScheme"] = CompanyFirstDomainByWeChatRegister;
+                dicM[@"fromAppUrlScheme"] = self.companyFirstDomainByWeChatRegister;
                 
                 NSString *encodedString = [[dicM mj_JSONString] mj_url].absoluteString;
                 

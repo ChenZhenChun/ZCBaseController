@@ -37,6 +37,15 @@
 @property (nonatomic,copy) NSString     *url;//地址预赋值。
 
 /**
+ 如果这个属性赋值了，优先使用改属性（该属性优于AppConfig.plist配置的CompanyFirstDomainByWeChatRegister）
+ xxxxxxxx.a.b.cn
+ xxxxxxxx为自定义字符串，标识不同项目
+ a.b.cn 域名，不能随便填写，微信支付地址中redirect_url后面的域名。如果填其他域名，域名需要再微信商务上加白名单授权
+ 这两部分组成了一个app的scheme（设定scheme为这个字符串，支付完成后能回跳到app）
+ */
+@property (nonatomic,copy) NSString     *companyFirstDomainByWeChatRegister;//微信支付回跳app需要使用的scheme（微信scheme要求比较严格，支付宝也使用微信这个scheme即可）
+
+/**
  根据本地html文件名加载html页面
 
  @param htmlName 本地html名字

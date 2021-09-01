@@ -160,7 +160,7 @@
     }
     
     // Wechat Pay, Note : modify redirect_url to resolve we couldn't return our app from wechat client.
-    if ([absoluteString hasPrefix:@"https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb"]
+    if ([absoluteString containsString:@".com/cgi-bin/mmpayweb-bin/checkmweb"]
         && ![absoluteString hasSuffix:[NSString stringWithFormat:@"redirect_url=%@://",self.companyFirstDomainByWeChatRegister]]
         ) {
         decisionHandler(WKNavigationActionPolicyCancel);
@@ -198,7 +198,7 @@
             if (canOpen) {
                 [[UIApplication sharedApplication] openURL:request.URL];
             }
-        }else if ([scheme isEqualToString:@"alipay"]) {
+        }else if ([scheme containsString:@"lipa"]) {
             // 截取 json 部分
             NSRange range = [absoluteString rangeOfString:@"{"];
             NSString *param1 = [absoluteString substringFromIndex:range.location];

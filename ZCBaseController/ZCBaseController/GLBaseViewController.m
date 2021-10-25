@@ -8,7 +8,6 @@
 
 #import "GLBaseViewController.h"
 #import "UMMobClick/MobClick.h"
-#import <FBRetainCycleDetector/FBRetainCycleDetector.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import "MacroDefinition.h"
 #import "GLBaseWebViewController.h"
@@ -60,16 +59,6 @@
 }
 
 - (void)backOnView {
-#ifdef DEBUG
-    if (!@available(iOS 14.0, *)) {
-        FBRetainCycleDetector *detector = [FBRetainCycleDetector new];
-        [detector addCandidate:self];
-        NSSet *retainCycles = [detector findRetainCyclesWithMaxCycleLength:100];
-        if (retainCycles.count) {
-            NSLog(@"\n\nretainCycles ：%@\n\n", retainCycles);
-        }
-    }
-#endif
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     UIViewController *presentVC = self.presentingViewController;//presentingViewController表示的是present的起始控制器（presentedViewController 表示的是present的结束控制器）
     UINavigationController *nav = self.navigationController;//当前控制器是否有导航栏

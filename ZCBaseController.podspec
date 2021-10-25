@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
 s.name              = "ZCBaseController"
 
 #更新代码必须修改版本号
-s.version           = "1.0.7"
+s.version           = "1.0.8"
 s.summary           = "a ZCBaseController for ios."
 s.description       = <<-DESC
 It is a ZCBaseController used on iOS, which implement by Objective-C.
@@ -26,7 +26,6 @@ ss.source_files = 'ZCBaseController/ZCBaseController/*.{h,m}'
 ss.public_header_files = 'ZCBaseController/ZCBaseController/*.h'
 
 ss.dependency 'UMengAnalytics-NO-IDFA','4.2.5'
-ss.dependency 'FBRetainCycleDetector'
 ss.dependency 'ReactiveCocoa','2.5'
 ss.dependency 'ZOEEmptyPageDraw','~> 1.0'#空白页处理
 ss.dependency 'Macros','~> 1.0'

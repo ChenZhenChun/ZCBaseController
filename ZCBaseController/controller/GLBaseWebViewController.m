@@ -187,7 +187,7 @@
     }
     
     // Judge is whether to jump to other app.
-    if (![scheme isEqualToString:@"https"] && ![scheme isEqualToString:@"http"]) {
+    if ([scheme isEqualToString:@"weixin"] || [scheme containsString:@"lipa"]) {
         decisionHandler(WKNavigationActionPolicyCancel);
         if ([scheme isEqualToString:@"weixin"]) {
             // The var endPayRedirectURL was our saved origin url's redirect address. We need to load it when we return from wechat client.

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Bfw-4X-jTD" customClass="ZJJKSectionHeadView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7QO-Tn-17e" userLabel="bgView">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="今日资讯" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdc-NL-wIv" userLabel="titleL">
+                    <rect key="frame" x="15" y="0.0" width="300" height="44"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E45-nc-Zte" userLabel="rightBtn">
+                    <rect key="frame" x="315" y="0.0" width="60" height="44"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="FTA-Ij-m98"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="tintColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="21" maxY="0.0"/>
+                    <inset key="imageEdgeInsets" minX="40" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="更多" image="home_arrow">
+                        <color key="titleColor" red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="clickRightBtn:" destination="Bfw-4X-jTD" eventType="touchUpInside" id="ySF-2h-n6s"/>
+                    </connections>
+                </button>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jg7-rw-yL8" userLabel="line">
+                    <rect key="frame" x="0.0" y="43.5" width="375" height="0.5"/>
+                    <color key="backgroundColor" red="0.91372549020000005" green="0.91372549020000005" blue="0.91372549020000005" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="0.5" id="hYU-Ug-WOK"/>
+                    </constraints>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_headerIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Lhw-zV-1nI">
+                    <rect key="frame" x="0.0" y="14.5" width="4" height="15"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="dtq-8h-6gg"/>
+                        <constraint firstAttribute="width" constant="4" id="nYs-Uw-VQQ"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="7QO-Tn-17e" firstAttribute="leading" secondItem="Bfw-4X-jTD" secondAttribute="leading" id="2Pk-7N-XDL"/>
+                <constraint firstItem="E45-nc-Zte" firstAttribute="top" secondItem="Bfw-4X-jTD" secondAttribute="top" id="4ds-ns-zbc"/>
+                <constraint firstItem="Jg7-rw-yL8" firstAttribute="leading" secondItem="Bfw-4X-jTD" secondAttribute="leading" id="6gY-HW-xTF"/>
+                <constraint firstAttribute="trailing" secondItem="E45-nc-Zte" secondAttribute="trailing" id="AlB-hD-7nK"/>
+                <constraint firstAttribute="bottom" secondItem="sdc-NL-wIv" secondAttribute="bottom" id="Byj-0u-ibT"/>
+                <constraint firstItem="sdc-NL-wIv" firstAttribute="leading" secondItem="Bfw-4X-jTD" secondAttribute="leading" constant="15" id="IdZ-oF-hqX"/>
+                <constraint firstAttribute="bottom" secondItem="E45-nc-Zte" secondAttribute="bottom" id="LyZ-Tb-YbJ"/>
+                <constraint firstAttribute="trailing" secondItem="7QO-Tn-17e" secondAttribute="trailing" id="QLi-11-v1Y"/>
+                <constraint firstItem="sdc-NL-wIv" firstAttribute="top" secondItem="Bfw-4X-jTD" secondAttribute="top" id="QNK-gz-d6F"/>
+                <constraint firstItem="7QO-Tn-17e" firstAttribute="top" secondItem="Bfw-4X-jTD" secondAttribute="top" id="QjT-Xa-2AF"/>
+                <constraint firstItem="sdc-NL-wIv" firstAttribute="centerY" secondItem="Lhw-zV-1nI" secondAttribute="centerY" id="UHQ-GC-84u"/>
+                <constraint firstAttribute="bottom" secondItem="7QO-Tn-17e" secondAttribute="bottom" constant="-1" id="YFI-2v-C3p"/>
+                <constraint firstAttribute="bottom" secondItem="Jg7-rw-yL8" secondAttribute="bottom" id="fbW-NB-hSg"/>
+                <constraint firstItem="E45-nc-Zte" firstAttribute="leading" secondItem="sdc-NL-wIv" secondAttribute="trailing" id="ivM-zi-mUc"/>
+                <constraint firstAttribute="trailing" secondItem="Jg7-rw-yL8" secondAttribute="trailing" id="lPz-fG-4hC"/>
+                <constraint firstItem="Lhw-zV-1nI" firstAttribute="leading" secondItem="Bfw-4X-jTD" secondAttribute="leading" id="yuj-pW-29a"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="bgView" destination="7QO-Tn-17e" id="8bJ-pH-ZDf"/>
+                <outlet property="hotIcon" destination="Lhw-zV-1nI" id="q8h-9r-UgT"/>
+                <outlet property="line" destination="Jg7-rw-yL8" id="2ee-lH-g2H"/>
+                <outlet property="rightBtn" destination="E45-nc-Zte" id="WAj-nT-vUD"/>
+                <outlet property="rightBtnTop" destination="4ds-ns-zbc" id="Buu-4c-1be"/>
+                <outlet property="titleL" destination="sdc-NL-wIv" id="da3-MO-agm"/>
+                <outlet property="titleTop" destination="QNK-gz-d6F" id="Y1f-2q-GEC"/>
+            </connections>
+            <point key="canvasLocation" x="44.5" y="60"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="home_arrow" width="6" height="11"/>
+        <image name="home_headerIcon" width="5" height="14"/>
+    </resources>
+</document>

@@ -16,12 +16,9 @@
 @property (nonatomic,readonly) GLBaseWebViewController  *vc;
 - (instancetype)initWithController:(GLBaseWebViewController *)baseWebViewController;
 
-/**
- 本地是否安装了某个应用
 
- @param scheme
- @return
- */
+/// 本地是否安装了某个应用
+/// @param scheme scheme description
 + (BOOL)isInstalledAppByScheme:(NSString *)scheme;
 
 /**
@@ -30,5 +27,10 @@
  @param phone 电话号码
  */
 + (void)glCallPhone:(NSString *)phone;
+
+/// 获取所有的navigationController
+/// @param rootViewController keywindow的rootViewController
+/// @param arrayM new一个可变数组传进去
++ (void)getAllNavWithRootViewController:(UIViewController *)rootViewController arrayM:(NSMutableArray *)arrayM;
 
 @end

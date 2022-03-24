@@ -270,7 +270,7 @@
         [_vc.webView evaluateJavaScript:[NSString stringWithFormat:@"document.querySelector(\".doc-details-video-components-content\").style.marginTop=\"%fpx\"",(height+10)*scale]
                       completionHandler:^(id _Nullable a, NSError * _Nullable error) {
                           if (error) {
-                              DLog(@"%@",error);
+                              
                           }
                       }];
     }
@@ -485,6 +485,65 @@
     }
 }
 
+/**
+ 对某个url页面发起通知
+ 
+ @param dic
+ {
+ "url":"/xxx/xxx",
+ "parameters":{
+    "AA":"aa",
+    "BB":bb
+ },
+ "callbacks":"xxxxx(#)"
+ }
+ */
+- (void)notificationsWeb:(NSDictionary *)dic {
+    NSString *url = dic[@"url"];
+    NSDictionary *parameters = dic[@"parameters"];
+    NSString *callbacks = dic[@"callbacks"];
+    if ([NSString isBlankString:url]) {
+        return;
+    }
+    if ([NSString isBlankString:callbacks]) {
+        return;
+    }
+    
+    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    NSMutableArray *navArrayM = [[NSMutableArray alloc] init];
+    [WebViewModel getAllNavWithRootViewController:rootViewController arrayM:navArrayM];
+    NSMutableArray *vcArrayM = [[NSMutableArray alloc] init];
+    
+    //遍历出所有ViewController
+    for (UINavigationController *nav in navArrayM) {
+        for (UIViewController *vc in nav.viewControllers) {
+            UIViewController *tempVC = vc;
+            if ([tempVC isKindOfClass:NSClassFromString(@"RTContainerController")]) {
+                tempVC = [tempVC valueForKeyPath:@"contentViewController"];
+            }
+            if ([tempVC isKindOfClass:[UITabBarController class]]) {
+                [vcArrayM addObjectsFromArray:((UITabBarController *)tempVC).viewControllers];
+            }else {
+                [vcArrayM addObject:tempVC];
+            }
+        }
+    }
+    
+    for (GLBaseWebViewController *baseWebVC in vcArrayM) {
+        if ([baseWebVC isKindOfClass:[GLBaseWebViewController class]]) {
+            if (![NSString isBlankString:baseWebVC.url]&&[baseWebVC.url containsString:url]) {
+                callbacks = [callbacks stringByReplacingOccurrencesOfString:@"#" withString:[NSString stringWithFormat:@"'%@'",[parameters mj_JSONString]]];
+                [baseWebVC.webView evaluateJavaScript:callbacks completionHandler:^(id _Nullable q, NSError * _Nullable error) {
+                    if (error) {
+                        NSLog(@"==== %@ 脚本执行错误====",url);
+                    }
+                }];
+                break;
+            }
+        }
+    }
+}
+
 /// 传递参数给原生
 /// @param dic dic description
 - (void)parametersToNative:(NSDictionary *)dic {
@@ -583,6 +642,39 @@
         [lastObject.webView evaluateJavaScript:callback completionHandler:^(id _Nullable a, NSError * _Nullable error) {
             DLog(@"%@",error);
         }];
+    }
+}
+
+
+/// 获取所有的navigationController
+/// @param rootViewController keywindow的rootViewController
+/// @param arrayM new一个可变数组传进去
++ (void)getAllNavWithRootViewController:(UIViewController *)rootViewController arrayM:(NSMutableArray *)arrayM {
+    if ([rootViewController isKindOfClass:[UITabBarController class]]) {
+        NSArray *array = ((UITabBarController *)rootViewController).viewControllers;
+        for (UINavigationController *nav in array) {
+            if (nav && [nav isKindOfClass:[UINavigationController class]]) {
+                [arrayM addObject:nav];
+                UIViewController *topViewController = nav.viewControllers.lastObject;
+                if ([topViewController isKindOfClass:NSClassFromString(@"RTContainerController")]) {
+                    topViewController = [topViewController valueForKeyPath:@"contentViewController"];
+                }
+                if (topViewController.presentedViewController) {
+                    topViewController = topViewController.presentedViewController;
+                    [WebViewModel getAllNavWithRootViewController:topViewController arrayM:arrayM];
+                }
+            }
+        }
+    }else if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+        [arrayM addObject:rootViewController];
+        UIViewController *topViewController = ((UINavigationController *)rootViewController).viewControllers.lastObject;
+        if ([topViewController isKindOfClass:NSClassFromString(@"RTContainerController")]) {
+            topViewController = [topViewController valueForKeyPath:@"contentViewController"];
+        }
+        if (topViewController.presentedViewController) {
+            topViewController = topViewController.presentedViewController;
+            [WebViewModel getAllNavWithRootViewController:topViewController arrayM:arrayM];
+        }
     }
 }
 

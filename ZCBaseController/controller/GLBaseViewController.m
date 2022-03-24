@@ -66,6 +66,10 @@
         ||(presentVC && nav.viewControllers.count==1)
         ) {
         [self dismissViewControllerAnimated:YES completion:nil];
+        nav = [UIApplication sharedApplication].keyWindow.rootViewController;
+        if ([nav isKindOfClass:[UITabBarController class]]) {
+            nav = ((UITabBarController *)nav).selectedViewController;
+        }
     }else {
         if (nav) {
             [nav popViewControllerAnimated:YES];
@@ -79,7 +83,17 @@
             }
         }
     }
-    GLBaseWebViewController *baseWeb = [[self.navigationController viewControllers] lastObject];
+    
+    GLBaseWebViewController *baseWeb = [nav.viewControllers lastObject];
+    if (baseWeb == self) {
+        baseWeb = [nav.viewControllers objectAtIndexCheck:(nav.viewControllers.count-2)];
+        if (baseWeb == nil) {
+            baseWeb = [nav.viewControllers lastObject];
+        }
+    }
+    if ([baseWeb isKindOfClass:NSClassFromString(@"RTContainerController")]) {
+        baseWeb = [baseWeb valueForKeyPath:@"contentViewController"];
+    }
     if ([baseWeb isKindOfClass:[GLBaseWebViewController class]]) {
         [baseWeb refresh];
     }

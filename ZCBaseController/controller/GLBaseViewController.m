@@ -7,7 +7,6 @@
 //
 
 #import "GLBaseViewController.h"
-#import "UMMobClick/MobClick.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import "MacroDefinition.h"
 #import "GLBaseWebViewController.h"
@@ -107,7 +106,6 @@
             _handler = nil;
         }
     }
-    [MobClick endLogPageView:self.navigationItem.title?:NSStringFromClass([self class])];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -116,11 +114,6 @@
     [self.navigationController setNavigationBarHidden:self.isHiddenNav];
     self.navigationController.navigationBar.alpha = 1;
     [self autoNavBarStatus];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [MobClick beginLogPageView:self.navigationItem.title?:NSStringFromClass([self class])];
 }
 
 // 只支持竖屏

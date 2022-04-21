@@ -15,6 +15,9 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QdG-Be-Qzo">
                     <rect key="frame" x="15" y="8" width="384" height="44"/>
                     <color key="backgroundColor" red="0.2784313725" green="0.52156862749999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="69r-Mn-zBs"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <state key="normal" title="确定"/>
                     <userDefinedRuntimeAttributes>
@@ -36,7 +39,6 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="QdG-Be-Qzo" secondAttribute="bottom" constant="8" id="Glz-Bx-Unb"/>
                 <constraint firstAttribute="trailing" secondItem="QdG-Be-Qzo" secondAttribute="trailing" constant="15" id="LYS-v9-TOr"/>
                 <constraint firstItem="QdG-Be-Qzo" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="O9z-Ix-ViR"/>
                 <constraint firstItem="QdG-Be-Qzo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="ST3-fx-hHX"/>

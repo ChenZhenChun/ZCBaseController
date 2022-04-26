@@ -44,6 +44,11 @@
         } else {
             // Fallback on earlier versions
         }
+        
+        if (@available(iOS 15.0, *)) {
+            _tableView.sectionHeaderTopPadding = 0;
+        }
+        
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyBoard:)];
         tap.cancelsTouchesInView = NO;
         tap.delegate = self;

@@ -16,7 +16,6 @@
 #import "NSArray+Category.h"
 #import "NSObject+GLHUD.h"
 #import "ZCDocumentPickerVC.h"
-#import "ZCHttpRequestHelper.h"
 
 @interface WebViewModel()
 {
@@ -543,62 +542,6 @@
             }
         }
     }
-}
-
-/**
- https接口请求
- 
- @param dic
- {
- "url":"/xxx/xxx",//接口路径（相对路径绝对路径都支持）
- "callbacks":"xxxxx(#)",//{"code":"0","data":"","message":""}
- "loadingTipStr":"正在加载中",//有值:需要加载loading；无值：不需要加载loading（loading自行处理）
- "parameters":{
-    "AA":"aa",
-    "BB":bb
- }
- }
- */
-- (void)httpsRequestWithParameters:(NSDictionary *)dic {
-    NSString *url = dic[@"url"];
-    NSString *loadingTipStr = dic[@"loadingTipStr"];
-    NSMutableDictionary *parameters = [dic[@"parameters"] mutableCopy];
-    __block NSString *callbacks = dic[@"callbacks"];
-    if ([NSString isBlankString:url]) {
-        return;
-    }
-    
-    if (![NSString isBlankString:loadingTipStr]) {
-        [self hud_showHudInView:self.vc.view hint:loadingTipStr];
-    }
-    [ZCHttpRequestHelper requestWithURLString:url parameters:parameters type:HttpRequestTypePost success:^(id responseData,NSURLSessionDataTask *task) {
-        if (![NSString isBlankString:loadingTipStr]) {
-            [self hud_hide];
-        }
-        if (![NSString isBlankString:callbacks]) {
-            callbacks = [callbacks stringByReplacingOccurrencesOfString:@"#" withString:[NSString stringWithFormat:@"'%@'",[responseData mj_JSONString]]];
-            [self.vc.webView evaluateJavaScript:callbacks completionHandler:^(id _Nullable q, NSError * _Nullable error) {
-                if (error) {
-                    NSLog(@"==== %@ 脚本执行错误====",url);
-                }
-            }];
-        }
-        
-    } failure:^(id error) {
-        if (![NSString isBlankString:loadingTipStr]) {
-            [self hud_hide];
-            [self hud_showHintError:error];
-        }
-        if (![NSString isBlankString:callbacks]) {
-            callbacks = [callbacks stringByReplacingOccurrencesOfString:@"#" withString:[NSString stringWithFormat:@"'%@'",[@{@"code":@"-2",@"message":error?:@"接口调用失败"} mj_JSONString]]];
-            [self.vc.webView evaluateJavaScript:callbacks completionHandler:^(id _Nullable q, NSError * _Nullable error) {
-                if (error) {
-                    NSLog(@"==== %@ 脚本执行错误====",url);
-                }
-            }];
-        }
-        
-    }];
 }
 
 /// 传递参数给原生

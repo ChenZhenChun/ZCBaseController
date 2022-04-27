@@ -38,5 +38,6 @@
 	<string>pushLaunchMiniProgram</string>
 	<string>soundRecorder</string>
 	<string>notificationsWeb</string>
+	<string>httpsRequestWithParameters</string>
 </array>
 </plist>
